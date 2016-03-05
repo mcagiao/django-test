@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+{% block title %}Raspberries{% endblock %}
+{% block content %}
+<h1>Raspberries{%</h1>
+
+{% for raspberry in raspberry_list %}
+<h2>{{ raspberry.ip }} </h2>
+{% endfor %}
+{% endblock %}

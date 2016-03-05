@@ -31,3 +31,7 @@ def postData(request):
 
     data = json.dumps('ok')
     return HttpResponse(data, content_type='application/json')
+
+class RaspberryListView(generic.ListView):
+    model = Raspberry
+    template_name = 'core/raspberry-list.html'
