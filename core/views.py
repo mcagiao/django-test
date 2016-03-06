@@ -48,6 +48,6 @@ class RaspberryDetailView(generic.DetailView):
         context['data_list'] = Data.objects.filter(device=self.object)
         return context
 
-def raspberryData(request, pk):
-    d = Data.objects.filter(device=pk, name=request.GET['name'].upper()).last()
+def raspberryData(request, pk, name):
+    d = Data.objects.filter(device=pk, name=name.upper()).last()
     return JsonResponse({'value': d.value})
