@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 from .models import Raspberry, Data
 
@@ -45,7 +46,8 @@ class RaspberryDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['data_list'] = Data.objects.filter(device=self.object)
+        context['data_list'] = Data.objects.filter(device=self.object).order_by('-id')[:20]
+        context['data_list_json'] = serializers.serialize('json', context['data_list'])
         return context
 
 def raspberryData(request, pk, name):
