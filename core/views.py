@@ -33,7 +33,7 @@ def postData(request):
     d = Data(name=name, value=value, device=raspberry)
     d.save()
 
-    return JsonResponse('Ok')
+    return JsonResponse({'result': 'Ok'})
 
 class RaspberryListView(generic.ListView):
     model = Raspberry
@@ -47,3 +47,7 @@ class RaspberryDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['data_list'] = Data.objects.filter(device=self.object)
         return context
+
+def raspberryData(request, pk):
+    d = Data.objects.filter(device=pk, name=request.GET['name'].upper()).last()
+    return JsonResponse({'value': d.value})
