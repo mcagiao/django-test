@@ -9,19 +9,17 @@
 <table class='table table-bordered table-striped'>
 	<thead>
 		<tr>
-			<th>Ip</th>
-			<th>Mac</th>
-			<th>Hostname</th>
-			<th>Data</th>
+			<th>Created</th>
+			<th>Name</th>
+			<th>Value</th>
 		</tr>
 	</thead>
 	<tbody>
-		{% for raspberry in object_list %}
+		{% for data in data_list %}
 		<tr>
-			<td>{{ raspberry.ip }}</td>
-			<td>{{ raspberry.mac }}</td>
-			<td>{{ raspberry.hostname }}</td>
-			<td><li><a href="{% url 'raspberry-detail' raspberry.id %}">Go</a></li></td>
+			<td>{{ data.created }}</td>
+			<td>{{ data.name }}</td>
+			<td>{{ data.value}}</td>
 		</tr>
 		{% endfor %}
 	</tbody>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
@@ -8,6 +9,9 @@ import json
 
 class IndexView(generic.TemplateView):
     template_name = 'core/index.html'
+
+def info(request):
+    return JsonResponse({'server': 'Gpul server'})
 
 @csrf_exempt
 def postData(request):
@@ -29,9 +33,17 @@ def postData(request):
     d = Data(name=name, value=value, device=raspberry)
     d.save()
 
-    data = json.dumps('ok')
-    return HttpResponse(data, content_type='application/json')
+    return JsonResponse('Ok')
 
 class RaspberryListView(generic.ListView):
     model = Raspberry
     template_name = 'core/raspberry-list.html'
+
+class RaspberryDetailView(generic.DetailView):
+    model = Raspberry
+    template_name = 'core/raspberry-detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data_list'] = Data.objects.filter(device=self.object)
+        return context
