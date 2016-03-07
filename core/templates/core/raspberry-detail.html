@@ -1,21 +1,41 @@
 {% extends "core/index.html" %}
+{% load staticfiles %}
 {% block title %}Raspberries{% endblock %}
 {% block head%}
+<script src="{% static 'core/js/smoothie.js' %}"></script>
 <script>
+function createChart(timeSeries, id) {
+	var chart = new SmoothieChart();
+	chart.addTimeSeries(timeSeries, { strokeStyle: 'rgba(0, 255, 0, 1)', fillStyle: 'rgba(0, 255, 0, 0.2)', lineWidth: 4 });
+	chart.streamTo(document.getElementById(id), 2000);
+}
+
 $(function() {
 	var temperatureUrl = '{% url 'raspberry-data' object.id 'temperature' %}';
 	var humidityUrl = '{% url 'raspberry-data' object.id 'humidity' %}';
-	var bars = [{url: temperatureUrl, bar: $('#temperature'), unit: 'ºC'},
-				{url: humidityUrl, bar: $('#humidity'), unit: '%'}];
+
+	var temperatureChart = new TimeSeries();
+	var humidityChart = new TimeSeries();
+	[temperatureChart, humidityChart].forEach(function(item) {
+		item.append(new Date().getTime(), 100);
+		item.append(new Date().getTime(), 0);
+	});
+
+	var bars = [{url: temperatureUrl, bar: $('#temperature'), unit: 'ºC', chart: temperatureChart},
+				{url: humidityUrl, bar: $('#humidity'), unit: '%', chart: humidityChart}];
 	var test = {{ data_list_json | safe }};
 
 	window.setInterval(function(){
 		bars.forEach(function(item) {
 			$.get(item.url, function(data) {
 				item.bar.text(data.value + item.unit).attr('aria-valuenow', data.value).css('width', data.value + '%');
+				item.chart.append(new Date().getTime(), data.value);
 			});
 		});
 	}, 2000);
+
+	createChart(temperatureChart, 'temperature-chart');
+	createChart(humidityChart, 'humidity-chart');
 });
 </script>
 {% endblock %}
@@ -46,10 +66,10 @@ $(function() {
 </div>
 <div class='row'>
 	<div class='col-md-4'>
-		<canvas id="temperatureChart"></canvas>
+		<canvas id="temperature-chart"></canvas>
 	</div>
 	<div class='col-md-4'>
-		<canvas id="humidityChart"></canvas>
+		<canvas id="humidity-chart"></canvas>
 	</div>
 </div>
 {% endblock %}
