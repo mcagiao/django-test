@@ -47,7 +47,6 @@ class RaspberryDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data_list'] = Data.objects.filter(device=self.object).order_by('-id')[:20]
-        context['data_list_json'] = serializers.serialize('json', context['data_list'])
         return context
 
 class RaspberryDataStored(generic.DetailView):
@@ -57,6 +56,7 @@ class RaspberryDataStored(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data_list'] = Data.objects.filter(device=self.object).order_by('-id')[:20]
+        context['data_list_json'] = serializers.serialize('json', reversed(context['data_list']))
         return context
 
 def raspberryData(request, pk, name):

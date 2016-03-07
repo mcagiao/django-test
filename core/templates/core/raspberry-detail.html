@@ -23,7 +23,6 @@ $(function() {
 
 	var bars = [{url: temperatureUrl, bar: $('#temperature'), unit: 'ºC', chart: temperatureChart},
 				{url: humidityUrl, bar: $('#humidity'), unit: '%', chart: humidityChart}];
-	var test = {{ data_list_json | safe }};
 
 	window.setInterval(function(){
 		bars.forEach(function(item) {
