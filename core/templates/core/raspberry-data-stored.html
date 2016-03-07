@@ -1,0 +1,29 @@
+{% extends "core/index.html" %}
+{% block title %}Raspberries{% endblock %}
+{% block content %}
+<div class='page-header'>
+	<h1>Raspberry data</h1>
+</div>
+<div class='row'>
+<div class='col-md-12'>
+<table class='table table-bordered table-striped'>
+	<thead>
+		<tr>
+			<th>Created</th>
+			<th>Name</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for data in data_list %}
+		<tr>
+			<td>{{ data.created }}</td>
+			<td>{{ data.name }}</td>
+			<td>{{ data.value}}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+</div>
+</div>
+{% endblock %}
