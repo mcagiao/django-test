@@ -62,3 +62,7 @@ class RaspberryDataStored(generic.DetailView):
 def raspberryData(request, pk, name):
     d = Data.objects.filter(device=pk, name=name.upper()).last()
     return JsonResponse({'value': d.value})
+
+class LedColorView(generic.DetailView):
+    model = Raspberry
+    template_name = 'core/raspberry-led-color.html'
